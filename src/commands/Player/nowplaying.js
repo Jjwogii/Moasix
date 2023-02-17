@@ -9,12 +9,17 @@ module.exports = {
         const embed = new EmbedBuilder();
         embed.setColor(global.config.embedColour);
 
-        if (!queue) {
+        if (!queue || !queue.current) { // Added null check for queue and queue.current
             embed.setDescription("There isn't currently any music playing.");
             return await interaction.reply({ embeds: [embed] });
         }
 
         const progress = queue.createProgressBar();
+        if (!progress) { // Added null check for progress
+            embed.setDescription("There isn't currently any music playing.");
+            return await interaction.reply({ embeds: [embed] });
+        }
+
         embed.setDescription(`${progress}\n \n**[${queue.current.title}](${queue.current.url})** by **${queue.current.author}** is currently playing in **${interaction.guild.name}**. This track was requested by <@${queue.current.requestedBy.id}>.`);
 
         embed.setThumbnail(queue.current.thumbnail);
