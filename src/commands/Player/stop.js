@@ -2,7 +2,9 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
-    data: new SlashCommandBuilder().setName("stop").setDescription("Stops the current track and clears the queue."),
+    data: new SlashCommandBuilder()
+        .setName("stop")
+        .setDescription("Stops the current track."),
     async execute(interaction) {
         const queue = global.player.getQueue(interaction.guild.id);
 
@@ -12,7 +14,14 @@ module.exports = {
         if (!queue || !queue.playing) {
             embed.setDescription("There isn't currently any music playing.");
         } else {
-            queue.destroy();
+            // Set a timeout for 5 minutes (300000 milliseconds) to leave the voice channel after stopping the music
+            setTimeout(() => {
+                const connection = queue.connection;
+                if (connection) {
+                    connection.disconnect();
+                }
+            }, 300000);
+            queue.stop();
             embed.setDescription("The music has been stopped.");
         }
 

@@ -4,7 +4,7 @@ const { PlayerError } = require("discord-player");
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("join")
+        .setName("summon")
         .setDescription("Joins the voice channel you're currently in."),
     async execute(interaction) {
         await interaction.deferReply();
@@ -23,11 +23,11 @@ module.exports = {
         }
 
         const queue = global.player.createQueue(interaction.guild, {
-            leaveOnEnd: true,
-            leaveOnStop: true,
+            leaveOnEnd: false,
+            leaveOnStop: false,
             leaveOnEmpty: true,
             leaveOnEmptyCooldown: 300000,
-            autoSelfDeaf: false,
+            autoSelfDeaf: true,
             spotifyBridge: true,
             ytdlOptions: {
                 filter: "audioonly",
