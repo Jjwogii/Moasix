@@ -23,8 +23,18 @@ module.exports = {
             return await interaction.editReply({ embeds: [embed] });
         }
 
+        // Check if there is a track playing
+        const isPlaying = Boolean(queue.current);
         await queue.connection.disconnect();
-        embed.setDescription("Left voice channel.");
+
+        if (isPlaying) {
+            // If there is a track playing, send the disconnect event to dc.js
+            global.player.emit("botDisconnect", queue, true);
+            embed.setDescription("Left voice channel. The music was stopped because I was disconnected from the channel.");
+        } else {
+            embed.setDescription("Left voice channel.");
+        }
+
         return await interaction.editReply({ embeds: [embed] });
     },
 };
