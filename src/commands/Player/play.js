@@ -25,10 +25,10 @@ module.exports = {
 
         const query = interaction.options.getString("query");
         const queue = global.player.createQueue(interaction.guild, {
-            leaveOnEnd: true,
-            leaveOnStop: true,
+            leaveOnEnd: false,
+            leaveOnStop: false,
             leaveOnEmpty: true,
-            leaveOnEmptyCooldown: 300000,
+            leaveOnEmptyCooldown: 180000,
             autoSelfDeaf: false,
             spotifyBridge: true,
             ytdlOptions: {
