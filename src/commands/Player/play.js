@@ -29,7 +29,7 @@ module.exports = {
             leaveOnStop: false,
             leaveOnEmpty: true,
             leaveOnEmptyCooldown: 180000,
-            autoSelfDeaf: false,
+            autoSelfDeaf: true,
             spotifyBridge: true,
             ytdlOptions: {
                 filter: "audioonly",
