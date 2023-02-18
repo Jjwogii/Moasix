@@ -1,0 +1,94 @@
+[
+    {
+        "command": "back",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "clear",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "exit",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "loop",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "nowplaying",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "pause",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "play",
+        "folder": "Player",
+        "aliases": [
+            "p"
+        ]
+    },
+    {
+        "command": "playnext",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "playshuffle",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "queue",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "resume",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "save",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "seek",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "shuffle",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "skip",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "stop",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "summon",
+        "folder": "Player",
+        "aliases": []
+    },
+    {
+        "command": "volume",
+        "folder": "Player",
+        "aliases": []
+    }
+]
