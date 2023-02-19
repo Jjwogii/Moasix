@@ -7,12 +7,12 @@
     {
         "command": "clear",
         "folder": "Player",
-        "aliases": []
+        "aliases": ["cq"]
     },
     {
         "command": "exit",
         "folder": "Player",
-        "aliases": []
+        "aliases": ["leave", "dc", "disconnect"]
     },
     {
         "command": "loop",
@@ -32,9 +32,7 @@
     {
         "command": "play",
         "folder": "Player",
-        "aliases": [
-            "p"
-        ]
+        "aliases": ["p"]
     },
     {
         "command": "playnext",
@@ -84,11 +82,11 @@
     {
         "command": "summon",
         "folder": "Player",
-        "aliases": []
+        "aliases": ["join"]
     },
     {
         "command": "volume",
         "folder": "Player",
-        "aliases": []
+        "aliases": ["v"]
     }
 ]
