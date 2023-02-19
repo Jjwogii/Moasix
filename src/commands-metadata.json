@@ -88,5 +88,80 @@
         "command": "volume",
         "folder": "Player",
         "aliases": ["v"]
+    },
+    {
+        "command": "help",
+        "folder": "Misc",
+        "aliases": []
+    },
+    {
+        "command": "lyrics",
+        "folder": "Misc",
+        "aliases": []
+    },
+    {
+        "command": "stats",
+        "folder": "Misc",
+        "aliases": []
+    },
+    {
+        "command": "8d",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "bassboost",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "chorus",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "compressor",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "expander",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "flanger",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "nightcore",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "normalizer",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "phaser",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "reverse",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "surround",
+        "folder": "Effects",
+        "aliases": []
+    },
+    {
+        "command": "vaporwave",
+        "folder": "Effects",
+        "aliases": []
     }
 ]
