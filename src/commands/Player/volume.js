@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ChatInputCommandInteraction } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,24 +15,24 @@ module.exports = {
         if (!queue || !queue.playing) {
             embed.setDescription("There isn't currently any music playing.");
         } else {
-            const vol = interaction.options.getInteger("volume");
+            const vol = interaction instanceof ChatInputCommandInteraction ? interaction.options.getString("volume") : interaction.content.split(" ")[1];
 
             if (queue.volume === vol) {
                 embed.setDescription(`The current queue volume is already set to ${vol}%.`);
-                return await interaction.reply({ embeds: [embed] });
+                return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
             }
 
             const maxVolume = 1000;
 
             if (vol < 0 || vol > maxVolume) {
                 embed.setDescription(`The number that you have specified is not valid. Please enter a number between **0 and ${maxVolume}**.`);
-                return await interaction.reply({ embeds: [embed] });
+                return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
             }
 
             const success = queue.setVolume(vol);
             success ? embed.setDescription(`The current music's volume was set to **${vol}%**.`) : embed.setDescription("An error occurred whilst attempting to set the volume.");
         }
 
-        return await interaction.reply({ embeds: [embed] });
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
     },
 };

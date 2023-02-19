@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ChatInputCommandInteraction } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
@@ -12,12 +12,12 @@ module.exports = {
 
         if (!queue || !queue.playing) {
             embed.setDescription("There isn't currently any music playing.");
-            return await interaction.reply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         if (!queue.tracks[0]) {
             embed.setDescription("There aren't any other tracks in the queue. Use **/play** to add some more.");
-            return await interaction.reply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         await queue.shuffle();
@@ -31,6 +31,7 @@ module.exports = {
         fs.writeFileSync("src/data.json", newdata);
 
         embed.setDescription(queue.tracks.length > 1 ? `Successfully shuffled **${queue.tracks.length} tracks**!` : `Successfully shuffled **${queue.tracks.length} track**!`);
-        return await interaction.reply({ embeds: [embed] });
+
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
     },
 };

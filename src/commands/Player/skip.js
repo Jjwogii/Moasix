@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ChatInputCommandInteraction } = require("discord.js");
 const fs = require("fs");
 
 module.exports = {
@@ -12,7 +12,7 @@ module.exports = {
 
         if (!queue || !queue.playing) {
             embed.setDescription("There isn't currently any music playing.");
-            return await interaction.reply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         queue.skip();
@@ -27,6 +27,6 @@ module.exports = {
         let newdata = JSON.stringify(data);
         fs.writeFileSync("src/data.json", newdata);
 
-        return await interaction.reply({ embeds: [embed] });
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
     },
 };

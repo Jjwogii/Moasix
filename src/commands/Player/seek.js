@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ChatInputCommandInteraction } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -15,11 +15,11 @@ module.exports = {
 
         if (!queue) {
             embed.setDescription("There isn't currently any music playing.");
-            return await interaction.reply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
-        const minutes = interaction.options.getInteger("minutes");
-        const seconds = interaction.options.getInteger("seconds");
+        const minutes = interaction instanceof ChatInputCommandInteraction ? interaction.options.getString("minutes") : interaction.content.split(" ")[1];
+        const seconds = interaction instanceof ChatInputCommandInteraction ? interaction.options.getString("seconds") : interaction.content.split(" ")[2];
 
         const newPosition = minutes * 60 * 1000 + seconds * 1000;
 
@@ -27,6 +27,6 @@ module.exports = {
 
         embed.setDescription(`The current track has been seeked to **${minutes !== 0 ? `${minutes} ${minutes == 1 ? "minute" : "minutes"} and ` : ""} ${seconds} ${seconds == 1 ? "second" : "seconds"}**.`);
 
-        return await interaction.reply({ embeds: [embed] });
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
     },
 };

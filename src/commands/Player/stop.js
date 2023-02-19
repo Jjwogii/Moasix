@@ -1,10 +1,8 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ChatInputCommandInteraction } = require("discord.js");
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("stop")
-        .setDescription("Stops the current track."),
+    data: new SlashCommandBuilder().setName("stop").setDescription("Stops the current track."),
     async execute(interaction) {
         const queue = global.player.getQueue(interaction.guild.id);
 
@@ -25,6 +23,6 @@ module.exports = {
             embed.setDescription("The music has been stopped.");
         }
 
-        return await interaction.reply({ embeds: [embed] });
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
     },
 };

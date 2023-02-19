@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ChatInputCommandInteraction } = require("discord.js");
 const { PlayerError } = require("discord-player");
 const fs = require("node:fs");
 
@@ -9,22 +9,23 @@ module.exports = {
         .setDescription("Plays the specified playlist with a random track order.")
         .addStringOption((option) => option.setName("playlist").setDescription("Enter a playlist URL here to playshuffle.").setRequired(true)),
     async execute(interaction) {
-        await interaction.deferReply();
+        interaction instanceof ChatInputCommandInteraction ? await interaction.deferReply() : await interaction.channel.sendTyping();
 
         const embed = new EmbedBuilder();
         embed.setColor(global.config.embedColour);
 
         if (!interaction.member.voice.channelId) {
             embed.setDescription("You aren't currently in a voice channel.");
-            return await interaction.editReply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) {
             embed.setDescription("I can't play music in that voice channel.");
-            return await interaction.editReply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
-        const query = interaction.options.getString("playlist");
+        const query = interaction instanceof ChatInputCommandInteraction ? interaction.options.getString("playlist") : interaction.content.split(" ").slice(1).join(" ");
+
         const queue = global.player.createQueue(interaction.guild, {
             leaveOnEnd: true,
             leaveOnStop: true,
@@ -48,7 +49,7 @@ module.exports = {
         } catch (err) {
             await queue.destroy();
             embed.setDescription("I can't join that voice channel.");
-            return await interaction.editReply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         const res = await global.player.search(query, {
@@ -58,13 +59,13 @@ module.exports = {
         if (!res) {
             embed.setDescription(`I couldn't find a playlist with the name **${query}**`);
             await queue.destroy();
-            return await interaction.editReply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         if (!res.playlist) {
             embed.setDescription("The query specified doesn't appear to be a playlist.");
             await queue.destroy();
-            return await interaction.editReply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         try {
@@ -76,7 +77,7 @@ module.exports = {
                 if (err.statusCode == "InvalidTrack") {
                     embed.setDescription(`I couldn't find a playlist with the name **${query}**.`);
                     await queue.destroy();
-                    return await interaction.editReply({ embeds: [embed] });
+                    return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
                 }
             }
 
@@ -84,7 +85,7 @@ module.exports = {
 
             await queue.destroy();
             embed.setDescription("This media doesn't seem to be working right now, please try again later.");
-            return await interaction.followUp({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.followUp({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         const data = fs.readFileSync("src/data.json");
@@ -96,6 +97,6 @@ module.exports = {
 
         embed.setDescription(`**${res.tracks.length} tracks** from the ${res.playlist.type} **[${res.playlist.title}](${res.playlist.url})** have been loaded into the server queue.`);
 
-        return await interaction.editReply({ embeds: [embed] });
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
     },
 };

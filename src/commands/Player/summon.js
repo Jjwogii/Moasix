@@ -1,25 +1,22 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
-const { PlayerError } = require("discord-player");
+const { EmbedBuilder, ChatInputCommandInteraction } = require("discord.js");
 
 module.exports = {
-    data: new SlashCommandBuilder()
-        .setName("summon")
-        .setDescription("Joins the voice channel you're currently in."),
+    data: new SlashCommandBuilder().setName("summon").setDescription("Joins the voice channel you're currently in."),
     async execute(interaction) {
-        await interaction.deferReply();
+        interaction instanceof ChatInputCommandInteraction ? await interaction.deferReply() : await interaction.channel.sendTyping();
 
         const embed = new EmbedBuilder();
         embed.setColor(global.config.embedColour);
 
         if (!interaction.member.voice.channelId) {
             embed.setDescription("You aren't currently in a voice channel.");
-            return await interaction.editReply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         if (interaction.guild.members.me.voice.channelId && interaction.member.voice.channelId !== interaction.guild.members.me.voice.channelId) {
             embed.setDescription("I'm already in a voice channel.");
-            return await interaction.editReply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         const queue = global.player.createQueue(interaction.guild, {
@@ -45,10 +42,10 @@ module.exports = {
         } catch (err) {
             queue.destroy();
             embed.setDescription("I can't join that voice channel.");
-            return await interaction.editReply({ embeds: [embed] });
+            return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
         }
 
         embed.setDescription("Joined voice channel.");
-        return await interaction.editReply({ embeds: [embed] });
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.editReply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
     },
 };
