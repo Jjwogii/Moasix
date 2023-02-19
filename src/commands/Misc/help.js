@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
+const { EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, ChatInputCommandInteraction } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder().setName("help").setDescription("Shows all Melody commands available."),
@@ -9,8 +9,10 @@ module.exports = {
         embed.setDescription("Thank you for using **Melody**! To view all available commands, choose a category from the select menu below.");
         embed.setColor(global.config.embedColour);
 
+        const user_id = interaction instanceof ChatInputCommandInteraction ? interaction.user.id : interaction.author.id;
+
         const row = new ActionRowBuilder().addComponents(
-            new StringSelectMenuBuilder().setCustomId(`melody_help_category_select_${interaction.user.id}`).setPlaceholder("Select a category to view commands.").addOptions(
+            new StringSelectMenuBuilder().setCustomId(`melody_help_category_select_${user_id}`).setPlaceholder("Select a category to view commands.").addOptions(
                 {
                     label: "General",
                     description: "Commands available in Melody that do not relate to music.",
@@ -29,6 +31,6 @@ module.exports = {
             )
         );
 
-        return await interaction.reply({ embeds: [embed], components: [row] });
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed], components: [row] }) : await interaction.channel.send({ embeds: [embed], components: [row] });
     },
 };

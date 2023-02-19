@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, ChatInputCommandInteraction } = require("discord.js");
 
 module.exports = {
     data: new SlashCommandBuilder().setName("phaser").setDescription("Applies the phaser effect to the current music."),
@@ -18,6 +18,6 @@ module.exports = {
             embed.setDescription(`The **phaser** filter is now ${queue.getFiltersEnabled().includes("phaser") ? "enabled." : "disabled."}`);
         }
 
-        return await interaction.reply({ embeds: [embed] });
+        return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });
     },
 };
