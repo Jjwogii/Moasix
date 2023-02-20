@@ -26,7 +26,7 @@ module.exports = {
         const interaction = message;
 
         // Get the command
-        const command = message.content.split(" ").shift().slice(1);
+        const command = message.content.split(" ").shift().slice(configFile.prefix.length);
         const metadata = commands.find((c) => c.command === command || c.aliases.includes(command));
 
         // Return if metadata is undefined

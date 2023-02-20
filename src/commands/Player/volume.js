@@ -30,7 +30,7 @@ module.exports = {
             }
 
             const success = queue.setVolume(vol);
-            success ? embed.setDescription(`The current music's volume was set to **${vol}%**.`) : embed.setDescription("An error occurred whilst attempting to set the volume.");
+            success ? embed.setDescription(`The current music's volume was set to **${vol}%**.`) : embed.setDescription(`Please input a valid number between **0 and ${maxVolume}**.`);
         }
 
         return interaction instanceof ChatInputCommandInteraction ? await interaction.reply({ embeds: [embed] }) : await interaction.channel.send({ embeds: [embed] });

@@ -25,7 +25,7 @@ module.exports = {
                     url: x.url,
                 });
                 embed.setDescription(x.lyrics);
-                embed.setFooter({ text: "Courtesy of Genius" });
+                embed.setFooter({ text: "\n Courtesy of **Genius**" });
             })
             .catch(() => {
                 embed.setDescription(`I couldn't find a track with the name **${query}**.`);
