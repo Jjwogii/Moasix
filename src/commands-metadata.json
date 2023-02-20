@@ -100,11 +100,6 @@
         "aliases": []
     },
     {
-        "command": "stats",
-        "folder": "Misc",
-        "aliases": []
-    },
-    {
         "command": "8d",
         "folder": "Effects",
         "aliases": []
