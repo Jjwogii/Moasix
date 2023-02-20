@@ -1,13 +1,11 @@
 FROM node:lts-alpine
 
-RUN mkdir -p /usr/src/bot
+WORKDIR /usr/src/app
 
-WORKDIR /usr/src/bot
-
-COPY package.json /usr/src/bot
+COPY package*.json ./
 
 RUN npm install
 
-COPY . /usr/src/bot
+COPY . .
 
-CMD ["npm", "run" "test"]
+CMD ["npm", "test"]
